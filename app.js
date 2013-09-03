@@ -1,8 +1,6 @@
 var pg_url = process.env.DATABASE_URL || "";
 
 var express = require('express');
-var routes = require('./routes');
-var user = require('./routes/user');
 var http = require('http');
 var path = require('path');
 
