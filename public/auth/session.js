@@ -1,50 +1,69 @@
 Ember.Application.initializer({
     name: 'session',
-    initialize: function (container, application) {
+    initialize: function () {
+
+        $.cookie.defaults.expires = 14; // in Days
 
         App.Session = Ember.Object.extend({
+            authToken: null,
+            username: null,
+
             init: function () {
                 this._super();
 
-                this.set('authToken', $.cookie('auth_token'));
-                this.set('authAccountId', $.cookie('auth_account'));
+                var authToken = $.cookie('auth_token');
+
+                if (authToken) {
+                    this.set('authToken', authToken);
+                    this.authenticateWithToken(authToken);
+                }
             },
 
             authTokenChanged: function () {
                 var authToken = this.get('authToken');
-                $.cookie('auth_token', authToken);
+                if (authToken) {
+                    $.cookie('auth_token', authToken);
+                } else {
+                    $.removeCookie('auth_token');
+                }
             }.observes('authToken'),
 
-            authAccountIdChanged: function () {
-                var authAccountId = this.get('authAccountId');
-                $.cookie('auth_account', authAccountId);
-            }.observes('authAccountId'),
-
             isAuthenticated: function () {
-                return this.get('authToken') && this.get('authAccountId');
-            }.property('authToken', 'authAccountId'),
+                return this.get('authToken') && this.get('username');
+            }.property('authToken', 'username'),
 
             authenticate: function (username, password) {
+                this.sendAuthenticationRequest('post', { username: username, password: password });
+            },
+
+            authenticateWithToken: function (authToken) {
+                this.sendAuthenticationRequest('put', { token: authToken });
+            },
+
+            sendAuthenticationRequest: function (method, requestBody) {
                 $.ajax({
                     url: '/auth',
-                    method: 'post',
-                    data: {
-                        username: username,
-                        password: password
-                    },
+                    method: method,
+                    data: requestBody,
                     context: this
-                }).then(function (data) {
-                        var token = data.token;
-                        this.set('username', username);
-                        this.set('authToken', token);
-                        this.set('authAccountId', password);
-                    });
+                }).then(this.authenticationSuccess, this.authenticationFailure);
+            },
+
+            authenticationSuccess: function (data) {
+                var token = data.token,
+                    username = data.username;
+
+                this.set('username', username);
+                this.set('authToken', token);
+            },
+
+            authenticationFailure: function () {
+                console.log("Authentication Failure: ", arguments);
+                this.logout();
             },
 
             logout: function () {
-                this.set('username', "");
-                this.set('authToken', "");
-                this.set('authAccountId', "");
+                this.sendAuthenticationRequest('delete', { token: this.get('authToken') });
             }
 
         }).create();
