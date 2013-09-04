@@ -1,0 +1,13 @@
+<div class="auth-bar">
+    <div class="auth-form">
+        {{#if App.Session.isAuthenticated}}
+            Welcome back {{App.Session.username}}
+            <button {{action logout}}>Log Out</button>
+        {{else}}
+            <label>Username: </label>{{input type='text' valueBinding='username'}}
+            <label>Password: </label>{{input type='password' valueBinding='password'}}
+            <button {{action authenticate}}>Log In</button>
+        {{/if}}
+    </div>
+    <div class="banner">Welcome to RPG Player!</div>
+</div>

@@ -3,33 +3,48 @@
 <head>
     <meta charset="utf-8">
     <title>RPG Player</title>
+
+    <!-- CSS -->
     <link rel="stylesheet" href="lib/normalize.css">
     <link rel="stylesheet" href="style.css">
 
     <!-- Templates -->
-    <script type="text/x-handlebars">
-        <h2>Welcome to Ember.js</h2>
-
-        {{outlet}}
-    </script>
-    <script type="text/x-handlebars" data-template-name="index">
-        <ul>
-            {{#each item in model}}
-            <li>{{item}}</li>
-            {{/each}}
-        </ul>
-    </script>
+    <link rel="template" type="text/x-handlebars" id="application" href="application.handlebars">
+    <link rel="template" type="text/x-handlebars" id="index" href="index.handlebars">
+    <link rel="template" type="text/x-handlebars" id="authBar" href="auth/authBar.handlebars">
 </head>
 <body>
 
-
 <!-- Libraries -->
 <script src="lib/jquery-1.9.1.js"></script>
+<script src="lib/jquery.cookie.js"></script>
 <script src="lib/handlebars-1.0.0.js"></script>
 <script src="lib/ember-1.0.0.js"></script>
 
 <!-- Application -->
 <script src="application.js"></script>
+<script src="auth/session.js"></script>
+<script src="auth/authbarController.js"></script>
+
+<!-- Template Loader -->
+<script>
+    (function (templates) {
+        $.each(templates, function (idx, el) {
+            var name = $(el).attr("id");
+            var path = $(el).attr("href");
+            $.ajax({
+                async: false,
+                url: path,
+                cache: false,
+                dataType: 'html',
+                success: function (data, textStatus, jqXHR) {
+                    var compl = Ember.Handlebars.compile(data);
+                    Ember.TEMPLATES[name] = compl;
+                }
+            })
+        });
+    })($("link[rel=template]"));
+</script>
 
 </body>
 </html>

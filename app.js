@@ -3,6 +3,7 @@ var pg_url = process.env.DATABASE_URL || "";
 var express = require('express');
 var http = require('http');
 var path = require('path');
+var auth = require('./routes/auth');
 
 var app = express();
 
@@ -19,6 +20,7 @@ if ('development' == app.get('env')) {
     app.use(express.errorHandler());
 }
 
+app.post('/auth', auth.authenticate);
 //app.get('/', routes.index);
 //app.get('/users', user.list);
 
