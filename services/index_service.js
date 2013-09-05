@@ -1,5 +1,6 @@
-var mongo_service = require('./mongo_service');
-var _ = require('underscore');
+var _ = require('underscore'),
+    mongo = require('./mongo_service');
+
 
 var indexes = [
     {
@@ -15,11 +16,12 @@ var indexes = [
 
 var ensureIndexes = function () {
     _.each(indexes, function (index) {
-        mongo_service.getCollection(index.collection, function (collectionError, collection) {
+        mongo.getCollection(index.collection, function (collectionError, collection, finished) {
             if (collectionError) {
                 return console.warn("Error while creating index: ", index, collectionError);
             }
             collection.ensureIndex(index.index, index.options, function (indexError) {
+                finished();
                 if (indexError) {
                     console.warn("Error while creating index: ", index, indexError);
                 }

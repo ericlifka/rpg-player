@@ -8,7 +8,9 @@ var getCollection = function (collectionName, callback) {
         }
 
         var collection = db.collection(collectionName);
-        callback(null, collection);
+        callback(null, collection, function () {
+            db.close();
+        });
     });
 };
 
