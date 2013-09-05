@@ -1,9 +1,14 @@
 module.exports = function (app) {
     var auth = require('./auth');
+    var user = require('./user');
 
-    app.post('/auth', auth.authPOST);
-    app.put('/auth', auth.authPUT);
-    app.delete('/auth', auth.authDELETE);
+    app.post('/auth', auth.createSession);
+    app.put('/auth', auth.validateSession);
+    app.delete('/auth', auth.clearSession);
+
+    app.post('/user', user.createUser);
+    app.put('/user', user.updateUser);
+    app.delete('/user', user.deleteUser);
 
     app.get('/something', auth.authMiddleware, function (req, res) {
         console.log('/something');

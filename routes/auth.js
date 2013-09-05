@@ -1,20 +1,29 @@
+var user_service = require('../services/user_service');
+
 var sessions = {};
 
-var authPOST = function (req, res) {
-    var username = req.body.username,
-        password = req.body.password,
-        timeStamp = new Date(),
-        token = username + ":" + timeStamp.getTime();
-
-    if (!username || !password) {
-        return res.send(401);
-    }
-
-    sessions[token] = username;
-    return sendAuthResponse(username, token, res);
+var notMatched = function (userObject, username, password) {
+    return userObject.username !== username || userObject.password !== password;
 };
 
-var authPUT = function (req, res) {
+var createSession = function (req, res) {
+    var username = req.body.username,
+        password = req.body.password;
+
+    user_service.getUser(username, function (queryError, user) {
+        if (queryError || notMatched(user, username, password)) {
+            return res.send(401);
+        }
+
+        var timeStamp = new Date(),
+            token = username + ":" + timeStamp.getTime();
+
+        sessions[token] = username;
+        sendAuthResponse(username, token, res);
+    });
+};
+
+var validateSession = function (req, res) {
     var token = req.body.token,
         username = sessions[token];
 
@@ -25,7 +34,7 @@ var authPUT = function (req, res) {
     return sendAuthResponse(username, token, res);
 };
 
-var authDELETE = function (req, res) {
+var clearSession = function (req, res) {
     var token = req.body.token;
     sessions[token] = undefined;
     res.send(200);
@@ -38,7 +47,7 @@ var sendAuthResponse = function (username, token, res) {
     });
 };
 
-var authenticationMiddleware = function (req, res, next) {
+var authMiddleware = function (req, res, next) {
     var token = req.cookies.auth_token,
         username = sessions[token];
 
@@ -46,13 +55,13 @@ var authenticationMiddleware = function (req, res, next) {
         return res.send(401);
     }
 
-    req.user = username;
+    req.username = username;
     return next();
 };
 
 module.exports = {
-    authPOST: authPOST,
-    authPUT: authPUT,
-    authDELETE: authDELETE,
-    authMiddleware: authenticationMiddleware
+    createSession: createSession,
+    validateSession: validateSession,
+    clearSession: clearSession,
+    authMiddleware: authMiddleware
 };
