@@ -1,5 +1,9 @@
 {{render authBar}}
 
-<h2>Welcome to Ember.js</h2>
-
-{{outlet}}
+<div class="body">
+    {{#if App.Session.isAuthenticated}}
+        {{outlet}}
+    {{else}}
+        {{render register}}
+    {{/if}}
+</div>

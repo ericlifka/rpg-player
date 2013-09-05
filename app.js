@@ -4,6 +4,7 @@ var express = require('express');
 var http = require('http');
 var path = require('path');
 var routes = require('./routes/routes');
+var index_service = require('./services/index_service');
 
 var app = express();
 
@@ -23,6 +24,8 @@ if ('development' == app.get('env')) {
 }
 
 routes(app);
+
+index_service.ensureIndexes();
 
 http.createServer(app).listen(app.get('port'), function () {
     console.log('Express server listening on port ' + app.get('port'));

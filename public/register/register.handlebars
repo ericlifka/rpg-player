@@ -1,0 +1,14 @@
+<div class="register">
+    <h2>Register to get started!</h2>
+
+    <div>
+        <label>Username: </label>
+        {{input type='text' valueBinding='username'}}
+    </div>
+    <div>
+        <label>Password: </label>{{input type='password' valueBinding='password'}}
+    </div>
+    <div>
+        <button {{action register}}>Register</button>
+    </div>
+</div>

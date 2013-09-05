@@ -64,6 +64,18 @@ Ember.Application.initializer({
 
             logout: function () {
                 this.sendAuthenticationRequest('delete', { token: this.get('authToken') });
+            },
+
+            register: function (username, password) {
+                $.ajax({
+                    url: '/user',
+                    method: 'post',
+                    data: {
+                        username: username,
+                        password: password
+                    },
+                    context: this
+                }).then(this.authenticationSuccess, this.authenticationFailure);
             }
 
         }).create();

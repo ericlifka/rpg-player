@@ -4,7 +4,9 @@ App.AuthBarController = Ember.Controller.extend({
             var username = this.get('username'),
                 password = this.get('password');
 
-            App.Session.authenticate(username, password);
+            if (username && password) {
+                App.Session.authenticate(username, password);
+            }
         },
 
         logout: function () {

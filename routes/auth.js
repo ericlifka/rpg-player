@@ -3,7 +3,7 @@ var user_service = require('../services/user_service');
 var sessions = {};
 
 var notMatched = function (userObject, username, password) {
-    return userObject.username !== username || userObject.password !== password;
+    return !userObject || userObject.username !== username || userObject.password !== password;
 };
 
 var createSession = function (req, res) {

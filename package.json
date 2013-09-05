@@ -9,7 +9,8 @@
         "express": "3.3.5",
         "less-middleware": "*",
         "mongodb": "*",
-        "socket.io": "0.9.x"
+        "socket.io": "0.9.x",
+        "underscore": "*"
     },
     "engines": {
         "node": "0.10.x",
