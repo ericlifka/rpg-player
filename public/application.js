@@ -3,10 +3,15 @@ App = Ember.Application.create();
 App.Router.map(function () {
     this.route("home");
     this.route("loggedOut");
-//    this.route("register");
 });
 
 App.ApplicationRoute = Ember.Route.extend({
+    redirect: function () {
+        if (!App.Session.get('isAuthenticated')) {
+            this.transitionTo('index');
+        }
+    },
+
     authenticatedWatcher: function () {
         if (App.Session.get('isAuthenticated')) {
             this.transitionTo('home');
