@@ -6,6 +6,7 @@ App.AuthBarController = Ember.Controller.extend({
 
             if (username && password) {
                 App.Session.authenticate(username, password);
+//                this.get('target').transitionToRoute('home');
             }
         },
 
@@ -14,6 +15,7 @@ App.AuthBarController = Ember.Controller.extend({
             this.set('password', "");
 
             App.Session.logout();
+            this.get('target').transitionToRoute('loggedOut');
         }
     }
 });
