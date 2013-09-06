@@ -1,14 +1,18 @@
-<div class="register">
-    <h2>Register to get started!</h2>
+<div class="page">
+    <div class="section">
+        <div class="title">Register to get started!</div>
 
-    <div>
-        <label>Username: </label>
-        {{input type='text' valueBinding='username'}}
-    </div>
-    <div>
-        <label>Password: </label>{{input type='password' valueBinding='password'}}
-    </div>
-    <div>
-        <button {{action register}}>Register</button>
+        <div class="form">
+            <div>
+                <label>Username: </label>
+                {{input type='text' valueBinding='username'}}
+            </div>
+            <div>
+                <label>Password: </label>{{input type='password' valueBinding='password'}}
+            </div>
+            <div>
+                <button {{action register}}>Register</button>
+            </div>
+        </div>
     </div>
 </div>

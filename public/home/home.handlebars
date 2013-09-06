@@ -1,1 +1,16 @@
-Welcome {{username}}!
+<div class="page">
+    <div class="title">Welcome {{username}}!</div>
+
+    <div class="section">
+        <div class="title">Create a New Game</div>
+
+        <div class="form">
+            <div>
+                <label>Title: </label>{{input type='text' valueBinding='newGameTitle'}}
+            </div>
+            <div>
+                <button {{action createGame}}>Create</button>
+            </div>
+        </div>
+    </div>
+</div>
