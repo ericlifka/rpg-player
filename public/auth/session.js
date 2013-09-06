@@ -23,13 +23,11 @@ Ember.Application.initializer({
                 var authToken = this.get('authToken');
                 if (authToken) {
                     $.cookie('auth_token', authToken);
-                } else {
-                    $.removeCookie('auth_token');
                 }
             }.observes('authToken'),
 
             isAuthenticated: function () {
-                return this.get('authToken') && this.get('username');
+                return !!(this.get('authToken') && this.get('username'));
             }.property('authToken', 'username'),
 
             authenticate: function (username, password) {
@@ -53,8 +51,8 @@ Ember.Application.initializer({
                 var token = data.token,
                     username = data.username;
 
-                this.set('username', username);
                 this.set('authToken', token);
+                this.set('username', username);
             },
 
             authenticationFailure: function () {

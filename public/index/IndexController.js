@@ -1,4 +1,4 @@
-App.RegisterController = Ember.Controller.extend({
+App.IndexController = Ember.Controller.extend({
     actions: {
         register: function () {
             var username = this.get('username'),

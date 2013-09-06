@@ -1,9 +1,5 @@
 {{render authBar}}
 
 <div class="body">
-    {{#if App.Session.isAuthenticated}}
-        {{outlet}}
-    {{else}}
-        {{render register}}
-    {{/if}}
+    {{outlet}}
 </div>
