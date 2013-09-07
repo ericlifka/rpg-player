@@ -19,7 +19,7 @@ var createSession = function (req, res) {
             token = username + ":" + timeStamp.getTime();
 
         sessions[token] = username;
-        sendAuthResponse(username, token, res);
+        sendAuthResponse(user, token, res);
     });
 };
 
@@ -40,10 +40,11 @@ var clearSession = function (req, res) {
     res.send(200);
 };
 
-var sendAuthResponse = function (username, token, res) {
+var sendAuthResponse = function (user, token, res) {
     return res.send({
         token: token,
-        username: username
+        username: user.username,
+        id: user._id
     });
 };
 

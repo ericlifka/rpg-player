@@ -1,4 +1,5 @@
 var mongodb = require('mongodb'),
+    ObjectID = mongodb.ObjectID,
     mongoUrl = 'mongodb://127.0.0.1:27017/rpgPlayer';
 
 var getCollection = function (collectionName, callback) {
@@ -15,5 +16,6 @@ var getCollection = function (collectionName, callback) {
 };
 
 module.exports = {
-    getCollection: getCollection
+    getCollection: getCollection,
+    ObjectID: ObjectID
 };

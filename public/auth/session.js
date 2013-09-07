@@ -7,6 +7,7 @@ Ember.Application.initializer({
         App.Session = Ember.Object.extend({
             authToken: null,
             username: null,
+            userId: null,
 
             init: function () {
                 this._super();
@@ -27,7 +28,7 @@ Ember.Application.initializer({
             }.observes('authToken'),
 
             isAuthenticated: function () {
-                return !!(this.get('authToken') && this.get('username'));
+                return !!(this.get('authToken') && this.get('username') && this.get('userId'));
             }.property('authToken', 'username'),
 
             authenticate: function (username, password) {
@@ -49,15 +50,18 @@ Ember.Application.initializer({
 
             authenticationSuccess: function (data) {
                 var token = data.token,
-                    username = data.username;
+                    username = data.username,
+                    id = data.id;
 
                 this.set('authToken', token);
                 this.set('username', username);
+                this.set('userId', id);
             },
 
             authenticationFailure: function () {
-                console.log("Authentication Failure: ", arguments);
-                this.logout();
+                this.set('authToken', null);
+                this.set('username', null);
+                this.set('userId', null);
             },
 
             logout: function () {

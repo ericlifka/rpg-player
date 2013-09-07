@@ -10,9 +10,9 @@ module.exports = function (app) {
 
     // Authentication required endpoints
     app.delete('/auth', auth.authMiddleware, auth.clearSession);
-    app.put('/user', auth.authMiddleware, user.updateUser);
-    app.delete('/user', auth.authMiddleware, user.deleteUser);
-    app.get('/user', auth.authMiddleware, user.getUserDescription);
+//    app.put('/user', auth.authMiddleware, user.updateUser);
+//    app.delete('/users', auth.authMiddleware, user.deleteUser);
+    app.get('/users/:id', auth.authMiddleware, user.getUserDescription);
 
     app.post('/game', auth.authMiddleware, game.createGame);
 };

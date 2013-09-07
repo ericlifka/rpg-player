@@ -10,6 +10,18 @@ var getUser = function (username, callback) {
     });
 };
 
+var getUserById = function (userId, callback) {
+    userId = new mongo.ObjectID(userId);
+
+    mongo.getCollection('users', function (error, collection, finished) {
+        if (error) return callback(error, null);
+        collection.find({ _id: userId }).nextObject(function (queryError, userDocument) {
+            finished();
+            callback(queryError, userDocument);
+        });
+    });
+};
+
 var createUser = function (user, callback) {
     mongo.getCollection('users', function (error, collection, finished) {
         if (error) return callback(error, null);
@@ -22,5 +34,6 @@ var createUser = function (user, callback) {
 
 module.exports = {
     getUser: getUser,
-    createUser: createUser
+    createUser: createUser,
+    getUserById: getUserById
 };
