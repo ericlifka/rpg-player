@@ -31,7 +31,12 @@ var validateSession = function (req, res) {
         return res.send(401);
     }
 
-    return sendAuthResponse(username, token, res);
+    user_service.getUser(username, function (queryError, user) {
+        if (queryError) {
+            return res.send(401);
+        }
+        return sendAuthResponse(user, token, res);
+    });
 };
 
 var clearSession = function (req, res) {

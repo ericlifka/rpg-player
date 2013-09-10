@@ -29,7 +29,7 @@ Ember.Application.initializer({
 
             isAuthenticated: function () {
                 return !!(this.get('authToken') && this.get('username') && this.get('userId'));
-            }.property('authToken', 'username'),
+            }.property('authToken', 'username', 'userId'),
 
             authenticate: function (username, password) {
                 this.sendAuthenticationRequest('post', { username: username, password: password });
